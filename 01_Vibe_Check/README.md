@@ -45,20 +45,21 @@ You will be required to submit a link to your GitHub, as well as screenshots of 
 Please evaluate your system on the following questions:
 
 1. Explain the concept of object-oriented programming in simple terms to a complete beginner.
-    - Aspect Tested:
+    - Aspect Tested: Explanation/teaching ability, simplification of complex technical concepts
 2. Read the following paragraph and provide a concise summary of the key points…
-    - Aspect Tested:
+    - Aspect Tested: Reading comprehension
 3. Write a short, imaginative story (100–150 words) about a robot finding friendship in an unexpected place.
-    - Aspect Tested:
+    - Aspect Tested: Creative writing
 4. If a store sells apples in packs of 4 and oranges in packs of 3, how many packs of each do I need to buy to get exactly 12 apples and 9 oranges?
-    - Aspect Tested:
+    - Aspect Tested: Mathematical reasoning and problem solving
 5. Rewrite the following paragraph in a professional, formal tone…
-    - Aspect Tested:
+    - Aspect Tested: Tone/style transformation and rewriting
 
 #### ❓Question #1:
 
 Do the answers appear to be correct and useful?
 ##### ✅ Answer:
+Overall the anwers appear to be correct and useful. However, I found that my output format is a little off. 
 
 ---
 
@@ -73,17 +74,24 @@ Now test your assistant with personal questions it should be able to help with. 
 - "What can I cook with [enter ingredients] in fridge."
 
 ##### Your Prompts and Results:
-1. Prompt:
+1. Prompt: help me think through the pros and cons of the hub and spoke model of transit gateway
    - Result:
-2. Prompt:
+If your environment requires centralized control, ease of management, and scalable connectivity among many VPCs or networks, the Hub and Spoke model is a great fit.
+However, if your application demands low latency, heavy east-west traffic between spokes, or very high throughput with minimal bottlenecks, you may want to consider alternatives like partial meshes or direct peering in addition to the hub.
+
+2. Prompt: when using a hub and spoke model for transit gateway, why do you see an increase in latency?
    - Result:
-3. Prompt:
+When using the hub-and-spoke model with a Transit Gateway, you typically see an increase in latency because all traffic between spoke networks (VPCs) must route through the central transit gateway (the hub). This additional hop introduces extra processing and network traversal time compared to direct VPC-to-VPC peering or a more optimized routing path.
+
+3. Prompt: how can i decrease latency when using a hub and spoke model?
    - Result:
+To decrease latency in a hub-and-spoke model, focus on optimizing routes and network infrastructure between the hub and spokes, leveraging edge processing where possible, upgrading connection quality, fine-tuning network protocols, and possibly introducing additional hubs to reduce distances. Monitoring performance will help iteratively improve latency outcomes.
 
 #### ❓Question #2:
 
 Are the vibes of this assistant's answers aligned with your vibes? Why or why not?
 ##### ✅ Answer:
+The vibes of this assistant's answers align with my vibes because it gives concise and direct answers.
 
 ---
 
@@ -95,16 +103,31 @@ Now test your assistant with questions that would require capabilities beyond ba
 - "What time should I leave for the airport?"
 
 ##### Your Prompts and Results:
-1. Prompt:
+1. Prompt: Take a look at my google calendar and tell me what my schedule is like tomorrow.
    - Result:
-2. Prompt:
+I don’t have access to your Google Calendar. However, if you share your schedule or provide details about any events you have tomorrow, I can help summarize it for you!
+
+2. Prompt: Can you check the weather for tomorrow?
    - Result:
+I’m unable to access real-time data, including current weather updates. You can check the weather for tomorrow using a reliable weather website or app like Weather.com, AccuWeather, or your local meteorological service. If you tell me your location, I can guide you on how to find the forecast!
 
 #### ❓Question #3:
 
 What are some limitations of your application?
 ##### ✅ Answer:
 
+The application has several key limitations:
+
+  1. No external tool integration: The assistant cannot access real-time data or external services like Google Calendar, email,
+   or weather APIs, limiting its ability to help with time-sensitive or personalized queries.
+  2. No persistent memory: The assistant doesn't retain information across sessions, so it can't build context about my
+  preferences or past interactions over time.
+  3. Output formatting issues: As noted in Activity #1, the response formatting isn't always optimal and could be improved for
+  better readability.
+  4. Limited to text-based interactions: The assistant cannot process images, files, or other media types that might be useful
+  for certain tasks.
+  5. No proactive capabilities: It can only respond to prompts rather than proactively alerting or reminding me about important
+   information.
 ---
 
 This "vibe check" now serves as a baseline, of sorts, to help understand what holes your application has.
