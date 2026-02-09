@@ -19,8 +19,8 @@ Quicklinks are to help you **easily navigate individual lesson information** for
 
 | 📰 Module | ⏺️ Recording  | 🖼️ Slides     | 👨‍💻 Repo     | 📝 Homework      | 📁 Feedback       |
 |:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|
-|[🔁 The Agent Loop](../00_Docs/Modules/03_The_Agent_Loop) | [2/3 Recording](https://f.io/QC-BExgb) <br> password: `SRintel` | [Week 2 Slides](https://www.canva.com/design/DAHATfSSoiE/VxdmkItAu8acETozDzFq8Q/edit?utm_content=DAHATfSSoiE&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton) | [`03_The_Agent_Loop`](../03_The_Agent_Loop) | [Module 3 Assignment: Agentic Loop](https://forms.gle/LxnBbjnGTcbe8Xug6) | [Week 2 Feedback](https://forms.gle/wPQKAwXHaqo2V5aW6) |
-|[🕴️ Agentic RAG From Scratch](../00_Docs/Modules/04_Agentic-RAG-from-Scratch) | - | - | [`4_Agentic_RAG_From _Scratch`](../04_Agentic_RAG_From_Scratch) | [Module 4 Assignment: Agentic RAG](https://forms.gle/UP6gyW8Ge2Y8ycUn7) | - |
+|[🔁 The Agent Loop](../00_Docs/Modules/03_The_Agent_Loop) | [2/3 Recording](https://f.io/QC-BExgb) <br> password: `SRintel` | [Week 2 Slides](https://www.canva.com/design/DAHATfSSoiE/VxdmkItAu8acETozDzFq8Q/edit?utm_content=DAHATfSSoiE&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton) | [`03_The_Agent_Loop`](../03_The_Agent_Loop) | [Module 3 Assignment: Agentic Loop (due 2/10)](https://forms.gle/LxnBbjnGTcbe8Xug6) | [Week 2 Feedback](https://forms.gle/wPQKAwXHaqo2V5aW6) |
+|[🕴️ Agentic RAG From Scratch](../00_Docs/Modules/04_Agentic-RAG-from-Scratch) | - | - | [`4_Agentic_RAG_From _Scratch`](../04_Agentic_RAG_From_Scratch) | [Module 4 Assignment: Agentic RAG (due 2/10)](https://forms.gle/UP6gyW8Ge2Y8ycUn7) | - |
 
 Friendly reminders:
 1. Homeworks are due every Tuesday before we meet, and are submitted via Google Forms.
