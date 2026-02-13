@@ -26,7 +26,7 @@ Quicklinks are to help you **easily navigate individual lesson information** for
 
 | 📰 Module | ⏺️ Recording  | 🖼️ Slides     | 👨‍💻 Repo     | 📝 Homework      | 📁 Feedback       |
 |:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|
-|[🔄 Multi-Agent Applications](../00_Docs/Modules/05_Multi-Agent_Applications) | Coming soon! | [Week 3 Slides](https://www.canva.com/design/DAHA9EgZhrs/yMlmJQwBRCFHxvPvVyhlTQ/edit?utm_content=DAHA9EgZhrs&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton) | [`05_Multi_Agent_with_LangGraph`](../05_Multi_Agent_with_LangGraph) | [Module 5 Assignment: Multi-agents (due 2/17)](https://forms.gle/nXFVqwvVfiVM8DWQ7) | [Week 3 Feedback](https://forms.gle/k1cESPgXsYWrBTDU7) |
+|[🔄 Multi-Agent Applications](../00_Docs/Modules/05_Multi-Agent_Applications) | [2/10 Recording](https://f.io/sHNT3pUa) <br> password: `SRintel26` | [Week 3 Slides](https://www.canva.com/design/DAHA9EgZhrs/yMlmJQwBRCFHxvPvVyhlTQ/edit?utm_content=DAHA9EgZhrs&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton) | [`05_Multi_Agent_with_LangGraph`](../05_Multi_Agent_with_LangGraph) | [Module 5 Assignment: Multi-agents (due 2/17)](https://forms.gle/nXFVqwvVfiVM8DWQ7) | [Week 3 Feedback](https://forms.gle/k1cESPgXsYWrBTDU7) |
 |[🧠 Agent Memory](../00_Docs/Modules/06_Agent_Memory) | - | - | [`06_Agent_Memory`](../06_Agent_Memory) | [Module 6 Assignment: Agent Memory (due 2/17)](https://forms.gle/vyYhAsbZdgLZSu3RA) | - |
 
 
