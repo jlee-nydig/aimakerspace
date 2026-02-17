@@ -17,8 +17,8 @@ Although we will sequence material slightly differently than we have shown below
 - [🕴️ Agentic RAG](./Modules/04_Agentic-RAG-from-Scratch/README.md)
 
 #### "Complex" Agentic RAG
-- 🔄 Multi-Agent Applications
-- 🧠 Agent Memory
+- [🔄 Multi-Agent Applications](./Modules/05_Multi-Agent_Applications/README.md)
+- [🧠 Agent Memory](./Modules/06_Agent_Memory/README.md)
 - 🐕 Advanced Retrievers
 - 🔌 MCP Connectors
 - 📶 Deep Agents

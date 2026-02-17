@@ -22,6 +22,18 @@ In addition to the tools we've already learned, in this module you'll need:
 - [Context Rot](https://research.trychroma.com/context-rot) (July 2025)
 - [Workflows and agents](https://docs.langchain.com/oss/python/langgraph/workflows-agents), by LangGraph
 
+## 📸 Recommended Concepts & Code Deep Dive Lecture
+
+<p align="center">
+  <a href="https://youtu.be/fIu4wf2osyY">
+    <img
+      src="https://img.youtube.com/vi/fIu4wf2osyY/maxresdefault.jpg"
+      alt="Watch the video on YouTube"
+      width="80%"
+    />
+  </a>
+</p>
+
 # 🗺️ Overview
 
 In module 5, we’ll cover multi-agent applications!  This class of LLM applications adds an additional layer of complexity to our ability to create agentic applications.

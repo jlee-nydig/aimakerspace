@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "graphs": {
+    "investment_memory": "./src/investment_memory/agents.py:investment_graph"
+  },
+  "env": ".env",
+  "python_version": "3.11",
+  "dependencies": ["."]
+}
