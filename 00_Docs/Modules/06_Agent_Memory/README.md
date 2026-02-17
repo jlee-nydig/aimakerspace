@@ -16,6 +16,18 @@
 ## 📜 Recommended Reading
 1. [Memory Overview](https://docs.langchain.com/oss/python/concepts/memory), by LangGraph
 
+## 📸 Recommended Concepts & Code Deep Dive Lecture
+
+<p align="center">
+  <a href="https://youtu.be/kGG_cnN7-og">
+    <img
+      src="https://img.youtube.com/vi/kGG_cnN7-og/maxresdefault.jpg"
+      alt="Watch the video on YouTube"
+      width="80%"
+    />
+  </a>
+</p>
+
 # **🗺️ Overview**
 
 In module 6, we dig into Agent Memory! You should use memory in your agent systems, because the user experience is much better when you do. When your AI remembers and learns from previous interactions, you can provide truly awesome, personalized user experiences.
