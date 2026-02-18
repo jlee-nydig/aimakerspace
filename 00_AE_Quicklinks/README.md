@@ -29,6 +29,10 @@ Quicklinks are to help you **easily navigate individual lesson information** for
 |[🔄 Multi-Agent Applications](../00_Docs/Modules/05_Multi-Agent_Applications) | [2/10 Recording](https://f.io/sHNT3pUa) <br> password: `SRintel26` | [Week 3 Slides](https://www.canva.com/design/DAHA9EgZhrs/yMlmJQwBRCFHxvPvVyhlTQ/edit?utm_content=DAHA9EgZhrs&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton) | [`05_Multi_Agent_with_LangGraph`](../05_Multi_Agent_with_LangGraph) | [Module 5 Assignment: Multi-agents (due 2/17)](https://forms.gle/nXFVqwvVfiVM8DWQ7) | [Week 3 Feedback](https://forms.gle/k1cESPgXsYWrBTDU7) |
 |[🧠 Agent Memory](../00_Docs/Modules/06_Agent_Memory) | - | - | [`06_Agent_Memory`](../06_Agent_Memory) | [Module 6 Assignment: Agent Memory (due 2/17)](https://forms.gle/vyYhAsbZdgLZSu3RA) | - |
 
+### Week 4: SDG and Evaluations
+| 📰 Module | ⏺️ Recording  | 🖼️ Slides     | 👨‍💻 Repo     | 📝 Homework      | 📁 Feedback       |
+|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|
+|[Module 7: 🧪 Synthetic Data Generation for Evals](../00_Docs/Modules/07_Synthetic_Data_Generation_for_Evals) <br><br> [Module 8: 📊 Agentic RAG Evaluation](../00_Docs/Modules/08_Agentic_RAG_Evaluation) | Coming soon! | [Week 4 Slides](https://www.canva.com/design/DAHBndeKc0U/wq_UMgQ832mMJni9_p_bow/edit?utm_content=DAHBndeKc0U&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton) | [`07_Synthetic_Data_and_Evaluation`](../07_Synthetic_Data_and_Evaluation) | [Module 7/8 Assignment: SDG and Eval](https://forms.gle/hec1caVrPVgPtLGB9) <br><br> [Project ideation form](https://forms.gle/A1kGTHff3VdAwodp6) (due 2/24)| [Week 4 Feedback](https://forms.gle/A1kGTHff3VdAwodp6) |
 
 Friendly reminders:
 1. Homeworks are due every Tuesday before we meet, and are submitted via Google Forms.
