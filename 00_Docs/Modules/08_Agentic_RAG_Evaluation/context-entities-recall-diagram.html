@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Context Entities Recall — Process Diagram</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --border: #30363d;
+    --accent: #58a6ff;
+    --accent2: #f0c351;
+    --green: #3fb950;
+    --red: #f85149;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --pink: #f778ba;
+    --orange: #f0883e;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    min-height: 100vh;
+    padding: 48px 24px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .container { max-width: 900px; width: 100%; }
+
+  h1 {
+    font-size: 2.4rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 1.05rem;
+    font-weight: 300;
+    margin-bottom: 48px;
+  }
+
+  /* ---- INPUTS BANNER ---- */
+  .inputs-banner {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+
+  .input-chip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    text-align: center;
+  }
+
+  .input-chip .chip-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .input-chip .chip-val { font-weight: 600; font-size: 0.95rem; }
+  .input-chip .chip-val.r { color: var(--accent2); }
+  .input-chip .chip-val.c { color: var(--pink); }
+
+  /* ---- KEY DIFFERENCE ---- */
+  .key-diff {
+    background: rgba(240,195,81,0.06);
+    border: 1px solid rgba(240,195,81,0.2);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .key-diff .diff-icon {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background: rgba(240,195,81,0.15);
+    color: var(--accent2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    margin-top: 1px;
+  }
+
+  .key-diff p {
+    color: var(--muted);
+    font-size: 0.9rem;
+    font-weight: 300;
+    line-height: 1.55;
+  }
+
+  .key-diff strong { color: var(--accent2); font-weight: 600; }
+
+  /* ---- FLOW ---- */
+  .flow { display: flex; flex-direction: column; gap: 0; position: relative; }
+
+  .step { position: relative; padding-left: 64px; padding-bottom: 40px; }
+  .step:last-child { padding-bottom: 0; }
+
+  .step::before {
+    content: '';
+    position: absolute;
+    left: 22px;
+    top: 48px;
+    bottom: 0;
+    width: 2px;
+    background: var(--border);
+  }
+  .step:last-child::before { display: none; }
+
+  .step-num {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+    font-size: 1.1rem;
+    z-index: 2;
+  }
+
+  .step-num.blue { background: rgba(88,166,255,0.15); color: var(--accent); border: 2px solid var(--accent); }
+  .step-num.yellow { background: rgba(240,195,81,0.15); color: var(--accent2); border: 2px solid var(--accent2); }
+  .step-num.green { background: rgba(63,185,80,0.15); color: var(--green); border: 2px solid var(--green); }
+  .step-num.pink { background: rgba(247,120,186,0.15); color: var(--pink); border: 2px solid var(--pink); }
+
+  .step-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 28px;
+    transition: border-color 0.2s;
+  }
+  .step-card:hover { border-color: var(--accent); }
+
+  .step-label {
+    font-size: 0.7rem;
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .step-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 12px; }
+
+  .step-desc {
+    color: var(--muted);
+    font-weight: 300;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  /* ---- EXAMPLE BOX ---- */
+  .example-box {
+    margin-top: 16px;
+    background: rgba(88,166,255,0.06);
+    border: 1px solid rgba(88,166,255,0.15);
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: var(--text);
+  }
+
+  .example-box .label {
+    color: var(--accent);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .entity-tag {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    margin: 3px 2px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .entity-tag.ref { background: rgba(240,195,81,0.15); color: var(--accent2); border: 1px solid rgba(240,195,81,0.3); }
+  .entity-tag.ctx { background: rgba(247,120,186,0.15); color: var(--pink); border: 1px solid rgba(247,120,186,0.3); }
+  .entity-tag.match { background: rgba(63,185,80,0.15); color: var(--green); border: 1px solid rgba(63,185,80,0.3); }
+  .entity-tag.miss { background: rgba(248,81,73,0.12); color: var(--red); border: 1px solid rgba(248,81,73,0.25); text-decoration: line-through; }
+
+  /* ---- VENN ---- */
+  .venn-wrapper {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    position: relative;
+    height: 160px;
+  }
+
+  .venn-circle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    text-align: center;
+    line-height: 1.4;
+    position: absolute;
+  }
+
+  .venn-circle.left {
+    background: rgba(240,195,81,0.12);
+    border: 2px solid rgba(240,195,81,0.4);
+    left: calc(50% - 130px);
+    color: var(--accent2);
+  }
+
+  .venn-circle.right {
+    background: rgba(247,120,186,0.12);
+    border: 2px solid rgba(247,120,186,0.4);
+    left: calc(50% - 20px);
+    color: var(--pink);
+  }
+
+  .venn-overlap {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--green);
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  .venn-labels {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 60px;
+    margin-top: 8px;
+  }
+
+  .venn-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* ---- FORMULA ---- */
+  .formula-section { margin-top: 48px; text-align: center; }
+
+  .formula-box {
+    display: inline-block;
+    background: var(--surface);
+    border: 2px solid var(--accent2);
+    border-radius: 16px;
+    padding: 32px 48px;
+    position: relative;
+  }
+
+  .formula-box::before {
+    content: 'FORMULA';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg);
+    padding: 0 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--accent2);
+  }
+
+  .formula {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.05rem;
+  }
+
+  .formula-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0;
+  }
+
+  .formula .name { font-weight: 500; color: var(--accent2); margin-right: 8px; font-size: 1.05rem; }
+  .formula .equals { color: var(--muted); margin: 0 12px; font-size: 1.3rem; }
+
+  .frac { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .frac-num { color: var(--green); padding-bottom: 6px; border-bottom: 2px solid var(--muted); }
+  .frac-den { color: var(--text); padding-top: 6px; }
+
+  /* ---- ABBREV ---- */
+  .abbrev-row {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .abbrev {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  .abbrev code {
+    font-weight: 500;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.78rem;
+  }
+
+  .abbrev code.re { background: rgba(240,195,81,0.15); color: var(--accent2); }
+  .abbrev code.rce { background: rgba(247,120,186,0.15); color: var(--pink); }
+
+  /* ---- CALC EXAMPLE ---- */
+  .calc-example {
+    margin-top: 40px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 32px;
+    text-align: center;
+  }
+
+  .calc-example .calc-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .calc-row {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .calc-frac { display: inline-flex; flex-direction: column; align-items: center; }
+  .calc-frac .num { color: var(--green); border-bottom: 2px solid var(--muted); padding-bottom: 4px; }
+  .calc-frac .den { color: var(--text); padding-top: 4px; }
+  .calc-result { color: var(--accent2); font-weight: 700; font-size: 1.5rem; }
+  .calc-eq { color: var(--muted); }
+
+  /* ---- RESPONSIVE ---- */
+  @media (max-width: 600px) {
+    h1 { font-size: 1.6rem; }
+    .inputs-banner { grid-template-columns: 1fr; }
+    .step { padding-left: 52px; }
+    .formula-box { padding: 24px 20px; }
+    .formula { font-size: 0.85rem; }
+    .venn-circle { width: 120px; height: 120px; }
+  }
+
+  /* animations */
+  .step { opacity: 0; animation: fadeUp 0.5s ease forwards; }
+  .step:nth-child(1) { animation-delay: 0.1s; }
+  .step:nth-child(2) { animation-delay: 0.25s; }
+  .step:nth-child(3) { animation-delay: 0.4s; }
+  .step:nth-child(4) { animation-delay: 0.55s; }
+
+  .formula-section { opacity: 0; animation: fadeUp 0.5s ease 0.7s forwards; }
+  .calc-example { opacity: 0; animation: fadeUp 0.5s ease 0.9s forwards; }
+  .inputs-banner { opacity: 0; animation: fadeUp 0.5s ease 0.05s forwards; }
+  .key-diff { opacity: 0; animation: fadeUp 0.5s ease 0.08s forwards; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Context Entities Recall</h1>
+  <p class="subtitle">Measures what fraction of the named entities in the reference are also present in the retrieved context.</p>
+
+  <!-- Inputs -->
+  <div class="inputs-banner">
+    <div class="input-chip">
+      <div class="chip-label">Input 1</div>
+      <div class="chip-val r">Ground-Truth Reference</div>
+    </div>
+    <div class="input-chip">
+      <div class="chip-label">Input 2</div>
+      <div class="chip-val c">Retrieved Context</div>
+    </div>
+  </div>
+
+  <!-- Key difference callout -->
+  <div class="key-diff">
+    <div class="diff-icon">⚡</div>
+    <p><strong>No LLM needed!</strong> Unlike Context Recall, this metric uses pure entity extraction (NER) — no LLM judgement calls. It compares entity sets directly, making it faster and fully deterministic.</p>
+  </div>
+
+  <!-- Steps -->
+  <div class="flow">
+
+    <!-- Step 1 -->
+    <div class="step">
+      <div class="step-num blue">1</div>
+      <div class="step-card">
+        <div class="step-label">Extract</div>
+        <div class="step-title">Find all entities in the reference (RE)</div>
+        <div class="step-desc">
+          Extract every named entity — people, places, dates, organizations, etc. — from the <strong style="color:var(--accent2)">ground-truth reference</strong>.
+        </div>
+        <div class="example-box">
+          <span class="label">Reference</span>
+          "Albert Einstein developed the theory of relativity at the ETH Zurich. He was born in Ulm, Germany in 1879."
+          <br><br>
+          <span class="label">→ Entities in Reference (RE)</span>
+          <span class="entity-tag ref">Albert Einstein</span>
+          <span class="entity-tag ref">ETH Zurich</span>
+          <span class="entity-tag ref">Ulm</span>
+          <span class="entity-tag ref">Germany</span>
+          <span class="entity-tag ref">1879</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step">
+      <div class="step-num pink">2</div>
+      <div class="step-card">
+        <div class="step-label">Extract</div>
+        <div class="step-title">Find all entities in the retrieved context (RCE)</div>
+        <div class="step-desc">
+          Do the same entity extraction on the <strong style="color:var(--pink)">retrieved context</strong>.
+        </div>
+        <div class="example-box">
+          <span class="label">Retrieved Context</span>
+          "Einstein is famous for the theory of relativity. He was born in 1879 and later worked at Princeton."
+          <br><br>
+          <span class="label">→ Entities in Context (RCE)</span>
+          <span class="entity-tag ctx">Einstein</span>
+          <span class="entity-tag ctx">1879</span>
+          <span class="entity-tag ctx">Princeton</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step">
+      <div class="step-num green">3</div>
+      <div class="step-card">
+        <div class="step-label">Intersect</div>
+        <div class="step-title">Find common entities between RE and RCE</div>
+        <div class="step-desc">
+          Compare the two entity sets. Which entities from the <strong style="color:var(--accent2)">reference</strong> also appear in the <strong style="color:var(--pink)">retrieved context</strong>?
+        </div>
+        <div class="example-box">
+          <span class="label">→ Match check against RE</span>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;">
+            <span class="entity-tag match">Albert Einstein ✓</span>
+            <span class="entity-tag miss">ETH Zurich ✗</span>
+            <span class="entity-tag miss">Ulm ✗</span>
+            <span class="entity-tag miss">Germany ✗</span>
+            <span class="entity-tag match">1879 ✓</span>
+          </div>
+          <div style="margin-top:12px; color:var(--muted); font-size:0.78rem;">
+            <span style="color:var(--green);">Common (RE ∩ RCE):</span> 2 &nbsp;|&nbsp;
+            <span>Total in RE:</span> 5
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step">
+      <div class="step-num yellow">4</div>
+      <div class="step-card">
+        <div class="step-label">Compute</div>
+        <div class="step-title">Calculate Context Entity Recall</div>
+        <div class="step-desc">
+          Divide the count of common entities by the total entities in the reference. Result is <strong>0</strong> (no entities recovered) to <strong>1</strong> (all entities recovered).
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Formula -->
+  <div class="formula-section">
+    <div class="formula-box">
+      <div class="formula">
+        <div class="formula-row">
+          <span class="name">CER</span>
+          <span class="equals">=</span>
+          <div class="frac">
+            <span class="frac-num">| RE ∩ RCE |</span>
+            <span class="frac-den">| RE |</span>
+          </div>
+        </div>
+      </div>
+      <div class="abbrev-row">
+        <span class="abbrev"><code class="re">RE</code> = entities in reference</span>
+        <span class="abbrev"><code class="rce">RCE</code> = entities in retrieved context</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Worked Example -->
+  <div class="calc-example">
+    <div class="calc-label">Worked Example</div>
+    <div class="calc-row">
+      <div class="calc-frac">
+        <span class="num">2</span>
+        <span class="den">5</span>
+      </div>
+      <span class="calc-eq">=</span>
+      <span class="calc-result">0.40</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

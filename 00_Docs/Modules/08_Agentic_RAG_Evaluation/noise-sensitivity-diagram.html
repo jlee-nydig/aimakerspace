@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Noise Sensitivity — Process Diagram</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --border: #30363d;
+    --accent: #58a6ff;
+    --accent2: #f0c351;
+    --green: #3fb950;
+    --red: #f85149;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --pink: #f778ba;
+    --orange: #f0883e;
+    --purple: #bc8cff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    min-height: 100vh;
+    padding: 48px 24px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .container { max-width: 920px; width: 100%; }
+
+  h1 {
+    font-size: 2.4rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, var(--orange), var(--red));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 1.05rem;
+    font-weight: 300;
+    margin-bottom: 48px;
+  }
+
+  /* ---- INPUTS BANNER ---- */
+  .inputs-banner {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+
+  .input-chip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    text-align: center;
+  }
+
+  .input-chip .chip-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .input-chip .chip-val { font-weight: 600; font-size: 0.95rem; }
+  .input-chip .chip-val.q { color: var(--accent); }
+  .input-chip .chip-val.c { color: var(--pink); }
+  .input-chip .chip-val.r { color: var(--accent2); }
+
+  /* ---- KEY INSIGHT ---- */
+  .key-diff {
+    background: rgba(240,136,62,0.06);
+    border: 1px solid rgba(240,136,62,0.2);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .key-diff .diff-icon {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background: rgba(240,136,62,0.15);
+    color: var(--orange);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    margin-top: 1px;
+  }
+
+  .key-diff p {
+    color: var(--muted);
+    font-size: 0.9rem;
+    font-weight: 300;
+    line-height: 1.55;
+  }
+
+  .key-diff strong { color: var(--orange); font-weight: 600; }
+
+  /* ---- FLOW ---- */
+  .flow { display: flex; flex-direction: column; gap: 0; position: relative; }
+
+  .step { position: relative; padding-left: 64px; padding-bottom: 40px; }
+  .step:last-child { padding-bottom: 0; }
+
+  .step::before {
+    content: '';
+    position: absolute;
+    left: 22px;
+    top: 48px;
+    bottom: 0;
+    width: 2px;
+    background: var(--border);
+  }
+  .step:last-child::before { display: none; }
+
+  .step-num {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+    font-size: 1.1rem;
+    z-index: 2;
+  }
+
+  .step-num.blue { background: rgba(88,166,255,0.15); color: var(--accent); border: 2px solid var(--accent); }
+  .step-num.yellow { background: rgba(240,195,81,0.15); color: var(--accent2); border: 2px solid var(--accent2); }
+  .step-num.green { background: rgba(63,185,80,0.15); color: var(--green); border: 2px solid var(--green); }
+  .step-num.red { background: rgba(248,81,73,0.15); color: var(--red); border: 2px solid var(--red); }
+  .step-num.orange { background: rgba(240,136,62,0.15); color: var(--orange); border: 2px solid var(--orange); }
+
+  .step-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 28px;
+    transition: border-color 0.2s;
+  }
+  .step-card:hover { border-color: var(--orange); }
+
+  .step-label {
+    font-size: 0.7rem;
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .step-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 12px; }
+  .step-desc { color: var(--muted); font-weight: 300; font-size: 0.95rem; line-height: 1.6; }
+
+  /* ---- EXAMPLE BOX ---- */
+  .example-box {
+    margin-top: 16px;
+    background: rgba(240,136,62,0.05);
+    border: 1px solid rgba(240,136,62,0.15);
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: var(--text);
+  }
+
+  .example-box .label {
+    color: var(--orange);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .claim {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 4px 0;
+  }
+
+  .claim-icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    margin-top: 2px;
+  }
+  .claim-icon.yes { background: rgba(63,185,80,0.2); color: var(--green); }
+  .claim-icon.no { background: rgba(248,81,73,0.2); color: var(--red); }
+
+  .claim-note {
+    color: var(--muted);
+    font-size: 0.72rem;
+    margin-left: 4px;
+  }
+
+  /* ---- FORMULA ---- */
+  .formula-section { margin-top: 48px; text-align: center; }
+
+  .formula-box {
+    display: inline-block;
+    background: var(--surface);
+    border: 2px solid var(--orange);
+    border-radius: 16px;
+    padding: 32px 48px;
+    position: relative;
+  }
+
+  .formula-box::before {
+    content: 'FORMULA';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg);
+    padding: 0 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--orange);
+  }
+
+  .formula-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 1.05rem;
+  }
+
+  .formula-row .name { font-weight: 500; color: var(--orange); margin-right: 4px; }
+  .formula-row .equals { color: var(--muted); margin: 0 10px; font-size: 1.2rem; }
+
+  .frac { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .frac-num { color: var(--red); padding-bottom: 6px; border-bottom: 2px solid var(--muted); text-align: center; }
+  .frac-den { color: var(--text); padding-top: 6px; text-align: center; }
+
+  .formula-note {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-align: center;
+    margin-top: 16px;
+  }
+
+  .formula-note em { color: var(--orange); font-style: normal; font-weight: 500; }
+
+  /* ---- SCALE BAR ---- */
+  .scale-bar {
+    margin-top: 40px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 28px;
+  }
+
+  .scale-bar .scale-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  .scale-track {
+    height: 12px;
+    border-radius: 6px;
+    background: linear-gradient(90deg, var(--green) 0%, var(--accent2) 50%, var(--red) 100%);
+    position: relative;
+    margin: 0 8px;
+  }
+
+  .scale-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding: 0 4px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+  }
+
+  .scale-labels .good { color: var(--green); }
+  .scale-labels .bad { color: var(--red); }
+
+  /* ---- CALC EXAMPLE ---- */
+  .calc-example {
+    margin-top: 40px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 32px;
+    text-align: center;
+  }
+
+  .calc-example .calc-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .calc-row {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .calc-frac { display: inline-flex; flex-direction: column; align-items: center; }
+  .calc-frac .num { color: var(--red); border-bottom: 2px solid var(--muted); padding-bottom: 4px; }
+  .calc-frac .den { color: var(--text); padding-top: 4px; }
+  .calc-result { color: var(--orange); font-weight: 700; font-size: 1.5rem; }
+  .calc-eq { color: var(--muted); }
+
+  /* ---- RESPONSIVE ---- */
+  @media (max-width: 600px) {
+    h1 { font-size: 1.6rem; }
+    .inputs-banner { grid-template-columns: 1fr; }
+    .step { padding-left: 52px; }
+    .formula-box { padding: 24px 20px; }
+    .formula-row { font-size: 0.85rem; }
+  }
+
+  /* animations */
+  .step { opacity: 0; animation: fadeUp 0.5s ease forwards; }
+  .step:nth-child(1) { animation-delay: 0.1s; }
+  .step:nth-child(2) { animation-delay: 0.25s; }
+  .step:nth-child(3) { animation-delay: 0.4s; }
+  .step:nth-child(4) { animation-delay: 0.55s; }
+
+  .formula-section { opacity: 0; animation: fadeUp 0.5s ease 0.7s forwards; }
+  .calc-example { opacity: 0; animation: fadeUp 0.5s ease 0.9s forwards; }
+  .scale-bar { opacity: 0; animation: fadeUp 0.5s ease 0.85s forwards; }
+  .inputs-banner { opacity: 0; animation: fadeUp 0.5s ease 0.05s forwards; }
+  .key-diff { opacity: 0; animation: fadeUp 0.5s ease 0.08s forwards; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Noise Sensitivity</h1>
+  <p class="subtitle">Measures how much the LLM's response is corrupted by irrelevant or noisy information in the retrieved context. Lower is better (0 → 1).</p>
+
+  <!-- Inputs -->
+  <div class="inputs-banner">
+    <div class="input-chip">
+      <div class="chip-label">Input 1</div>
+      <div class="chip-val q">User Question</div>
+    </div>
+    <div class="input-chip">
+      <div class="chip-label">Input 2</div>
+      <div class="chip-val c">Retrieved Context</div>
+    </div>
+    <div class="input-chip">
+      <div class="chip-label">Input 3</div>
+      <div class="chip-val r">Ground-Truth Reference</div>
+    </div>
+  </div>
+
+  <!-- Key insight callout -->
+  <div class="key-diff">
+    <div class="diff-icon">📡</div>
+    <p><strong>Flipped polarity!</strong> Unlike recall/precision (higher = better), Noise Sensitivity counts <strong>incorrect</strong> claims. A score of <strong>0</strong> means no noise contamination — the ideal. A score of <strong>1</strong> means every claim in the response is wrong.</p>
+  </div>
+
+  <!-- Steps -->
+  <div class="flow">
+
+    <!-- Step 1 -->
+    <div class="step">
+      <div class="step-num blue">1</div>
+      <div class="step-card">
+        <div class="step-label">Decompose</div>
+        <div class="step-title">Break the LLM response into individual claims</div>
+        <div class="step-desc">
+          An LLM reads the generated <strong style="color:var(--text)">response</strong> and splits it into atomic, standalone factual claims.
+        </div>
+        <div class="example-box">
+          <span class="label">Question: "Where was Einstein born?"</span>
+          <br>
+          <span class="label" style="color:var(--pink);">Retrieved Context (with noise)</span>
+          "Einstein was born in Ulm, Germany. Napoleon was exiled to Elba in 1814."
+          <br><br>
+          <span class="label" style="color:var(--text);">LLM Response</span>
+          "Einstein was born in Ulm, Germany. He was a contemporary of Napoleon, who was exiled to Elba."
+          <br><br>
+          <span class="label">→ Claims extracted from response</span>
+          <div class="claim"><span style="color:var(--accent2)">①</span> Einstein was born in Ulm, Germany</div>
+          <div class="claim"><span style="color:var(--accent2)">②</span> Einstein was a contemporary of Napoleon</div>
+          <div class="claim"><span style="color:var(--accent2)">③</span> Napoleon was exiled to Elba</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step">
+      <div class="step-num yellow">2</div>
+      <div class="step-card">
+        <div class="step-label">Verify</div>
+        <div class="step-title">Check each claim: is it correct / attributable to the reference?</div>
+        <div class="step-desc">
+          For every claim, an LLM judges: <em>"Is this claim correct and relevant to answering the question, given the <strong style="color:var(--accent2)">ground-truth reference</strong>?"</em> Claims that are factually wrong <strong>or</strong> irrelevant noise count as <strong style="color:var(--red)">incorrect</strong>.
+        </div>
+        <div class="example-box">
+          <span class="label">→ Verification against reference</span>
+          <div class="claim"><div class="claim-icon yes">✓</div> Einstein was born in Ulm, Germany <span class="claim-note">— correct &amp; relevant</span></div>
+          <div class="claim"><div class="claim-icon no">✗</div> Einstein was a contemporary of Napoleon <span class="claim-note">— incorrect (born 100+ yrs apart)</span></div>
+          <div class="claim"><div class="claim-icon no">✗</div> Napoleon was exiled to Elba <span class="claim-note">— irrelevant noise from context</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step">
+      <div class="step-num red">3</div>
+      <div class="step-card">
+        <div class="step-label">Count</div>
+        <div class="step-title">Tally incorrect claims vs. total claims</div>
+        <div class="step-desc">
+          Count how many claims were <strong style="color:var(--red)">incorrect</strong> (wrong or noise-induced) and how many <strong>total claims</strong> were in the response.
+        </div>
+        <div class="example-box">
+          <span class="label">Tally</span>
+          <div class="claim"><span style="color:var(--red)">Incorrect claims:</span>&nbsp; 2</div>
+          <div class="claim"><span style="color:var(--text)">Total claims:</span>&nbsp; 3</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step">
+      <div class="step-num orange">4</div>
+      <div class="step-card">
+        <div class="step-label">Compute</div>
+        <div class="step-title">Calculate the Noise Sensitivity score</div>
+        <div class="step-desc">
+          Divide incorrect claims by total claims. The result is <strong>0</strong> (no noise contamination — ideal) to <strong>1</strong> (entirely corrupted by noise).
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Formula -->
+  <div class="formula-section">
+    <div class="formula-box">
+      <div class="formula-row">
+        <span class="name">Noise Sensitivity</span>
+        <span class="equals">=</span>
+        <div class="frac">
+          <span class="frac-num">incorrect claims in response</span>
+          <span class="frac-den">total claims in response</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scale bar -->
+  <div class="scale-bar">
+    <div class="scale-label">Interpretation</div>
+    <div class="scale-track"></div>
+    <div class="scale-labels">
+      <span class="good">0.0 — No noise ✓</span>
+      <span class="bad">1.0 — All noise ✗</span>
+    </div>
+  </div>
+
+  <!-- Worked Example -->
+  <div class="calc-example">
+    <div class="calc-label">Worked Example</div>
+    <div class="calc-row">
+      <div class="calc-frac">
+        <span class="num">2</span>
+        <span class="den">3</span>
+      </div>
+      <span class="calc-eq">=</span>
+      <span class="calc-result">0.67</span>
+    </div>
+    <div class="formula-note" style="margin-top:12px;">
+      <em>High noise sensitivity</em> — the model was heavily influenced by irrelevant context
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

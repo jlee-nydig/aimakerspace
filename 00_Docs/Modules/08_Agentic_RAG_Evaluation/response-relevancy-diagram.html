@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Response Relevancy — Process Diagram</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --border: #30363d;
+    --accent: #58a6ff;
+    --accent2: #f0c351;
+    --green: #3fb950;
+    --red: #f85149;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --pink: #f778ba;
+    --sky: #79c0ff;
+    --purple: #bc8cff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    min-height: 100vh;
+    padding: 48px 24px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .container { max-width: 920px; width: 100%; }
+
+  h1 {
+    font-size: 2.4rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, var(--sky), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 1.05rem;
+    font-weight: 300;
+    margin-bottom: 48px;
+  }
+
+  /* ---- INPUTS BANNER ---- */
+  .inputs-banner {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+
+  .input-chip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    text-align: center;
+  }
+
+  .input-chip .chip-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .input-chip .chip-val { font-weight: 600; font-size: 0.95rem; }
+  .input-chip .chip-val.q { color: var(--accent); }
+  .input-chip .chip-val.a { color: var(--sky); }
+  .input-chip .chip-val.c { color: var(--pink); }
+
+  /* ---- KEY INSIGHT ---- */
+  .key-diff {
+    background: rgba(121,192,255,0.06);
+    border: 1px solid rgba(121,192,255,0.2);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .key-diff .diff-icon {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background: rgba(121,192,255,0.15);
+    color: var(--sky);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    margin-top: 1px;
+  }
+
+  .key-diff p {
+    color: var(--muted);
+    font-size: 0.9rem;
+    font-weight: 300;
+    line-height: 1.55;
+  }
+
+  .key-diff strong { color: var(--sky); font-weight: 600; }
+
+  /* ---- FLOW ---- */
+  .flow { display: flex; flex-direction: column; gap: 0; position: relative; }
+
+  .step { position: relative; padding-left: 64px; padding-bottom: 40px; }
+  .step:last-child { padding-bottom: 0; }
+
+  .step::before {
+    content: '';
+    position: absolute;
+    left: 22px;
+    top: 48px;
+    bottom: 0;
+    width: 2px;
+    background: var(--border);
+  }
+  .step:last-child::before { display: none; }
+
+  .step-num {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+    font-size: 1.1rem;
+    z-index: 2;
+  }
+
+  .step-num.sky { background: rgba(121,192,255,0.15); color: var(--sky); border: 2px solid var(--sky); }
+  .step-num.purple { background: rgba(188,140,255,0.15); color: var(--purple); border: 2px solid var(--purple); }
+  .step-num.green { background: rgba(63,185,80,0.15); color: var(--green); border: 2px solid var(--green); }
+  .step-num.yellow { background: rgba(240,195,81,0.15); color: var(--accent2); border: 2px solid var(--accent2); }
+
+  .step-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 28px;
+    transition: border-color 0.2s;
+  }
+  .step-card:hover { border-color: var(--sky); }
+
+  .step-label {
+    font-size: 0.7rem;
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .step-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 12px; }
+  .step-desc { color: var(--muted); font-weight: 300; font-size: 0.95rem; line-height: 1.6; }
+
+  /* ---- EXAMPLE BOX ---- */
+  .example-box {
+    margin-top: 16px;
+    background: rgba(121,192,255,0.05);
+    border: 1px solid rgba(121,192,255,0.15);
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: var(--text);
+  }
+
+  .example-box .label {
+    color: var(--sky);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .example-box .label.pink-label { color: var(--pink); }
+  .example-box .label.purple-label { color: var(--purple); }
+  .example-box .label.green-label { color: var(--green); }
+
+  .gen-q {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 5px 0;
+  }
+
+  .gen-q-num {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: rgba(188,140,255,0.15);
+    color: var(--purple);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 500;
+    margin-top: 1px;
+  }
+
+  /* ---- COSINE VIZ ---- */
+  .cosine-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 8px;
+  }
+
+  .cosine-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .cosine-item .pair {
+    font-size: 0.75rem;
+    color: var(--muted);
+    min-width: 160px;
+    flex-shrink: 0;
+  }
+
+  .cosine-bar-track {
+    flex: 1;
+    height: 10px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 5px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .cosine-bar-fill {
+    height: 100%;
+    border-radius: 5px;
+    transition: width 0.8s ease;
+  }
+
+  .cosine-bar-fill.high { background: linear-gradient(90deg, var(--green), var(--sky)); }
+  .cosine-bar-fill.med { background: linear-gradient(90deg, var(--accent2), var(--sky)); }
+  .cosine-bar-fill.low { background: linear-gradient(90deg, var(--red), var(--accent2)); }
+
+  .cosine-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.82rem;
+    font-weight: 500;
+    min-width: 40px;
+    text-align: right;
+  }
+
+  .cosine-val.high { color: var(--green); }
+  .cosine-val.med { color: var(--accent2); }
+  .cosine-val.low { color: var(--red); }
+
+  /* ---- FORMULA ---- */
+  .formula-section { margin-top: 48px; text-align: center; }
+
+  .formula-box {
+    display: inline-block;
+    background: var(--surface);
+    border: 2px solid var(--sky);
+    border-radius: 16px;
+    padding: 32px 40px;
+    position: relative;
+  }
+
+  .formula-box::before {
+    content: 'FORMULA';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg);
+    padding: 0 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--sky);
+  }
+
+  .formula-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .formula-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0;
+    font-size: 1rem;
+  }
+
+  .formula-row .name { font-weight: 500; color: var(--sky); margin-right: 4px; }
+  .formula-row .equals { color: var(--muted); margin: 0 10px; font-size: 1.2rem; }
+
+  .frac { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .frac-num { color: var(--green); padding-bottom: 6px; border-bottom: 2px solid var(--muted); text-align: center; }
+  .frac-den { color: var(--text); padding-top: 6px; text-align: center; }
+
+  .formula-divider { height: 1px; background: var(--border); width: 100%; }
+
+  .formula-where {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-align: left;
+    line-height: 1.8;
+  }
+
+  .formula-where code {
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    font-weight: 500;
+  }
+
+  .formula-where code.pu { background: rgba(188,140,255,0.15); color: var(--purple); }
+  .formula-where code.bl { background: rgba(88,166,255,0.15); color: var(--accent); }
+  .formula-where code.sk { background: rgba(121,192,255,0.15); color: var(--sky); }
+
+  /* ---- CALC EXAMPLE ---- */
+  .calc-example {
+    margin-top: 40px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 32px;
+    text-align: center;
+  }
+
+  .calc-example .calc-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .calc-steps {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 2;
+    text-align: left;
+    max-width: 480px;
+    margin: 0 auto 20px;
+  }
+
+  .calc-steps .hl { color: var(--accent2); }
+  .calc-steps .gl { color: var(--green); }
+
+  .calc-row {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .calc-frac { display: inline-flex; flex-direction: column; align-items: center; }
+  .calc-frac .num { color: var(--green); border-bottom: 2px solid var(--muted); padding-bottom: 4px; }
+  .calc-frac .den { color: var(--text); padding-top: 4px; }
+  .calc-result { color: var(--sky); font-weight: 700; font-size: 1.5rem; }
+  .calc-eq { color: var(--muted); }
+
+  /* ---- RESPONSIVE ---- */
+  @media (max-width: 600px) {
+    h1 { font-size: 1.6rem; }
+    .inputs-banner { grid-template-columns: 1fr; }
+    .step { padding-left: 52px; }
+    .formula-box { padding: 24px 16px; }
+    .formula-row { font-size: 0.82rem; }
+    .cosine-item .pair { min-width: 100px; font-size: 0.68rem; }
+  }
+
+  /* animations */
+  .step { opacity: 0; animation: fadeUp 0.5s ease forwards; }
+  .step:nth-child(1) { animation-delay: 0.1s; }
+  .step:nth-child(2) { animation-delay: 0.25s; }
+  .step:nth-child(3) { animation-delay: 0.4s; }
+  .step:nth-child(4) { animation-delay: 0.55s; }
+
+  .formula-section { opacity: 0; animation: fadeUp 0.5s ease 0.7s forwards; }
+  .calc-example { opacity: 0; animation: fadeUp 0.5s ease 0.9s forwards; }
+  .inputs-banner { opacity: 0; animation: fadeUp 0.5s ease 0.05s forwards; }
+  .key-diff { opacity: 0; animation: fadeUp 0.5s ease 0.08s forwards; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Response Relevancy</h1>
+  <p class="subtitle">Measures how relevant the generated response is to the original question, using reverse-engineered questions and cosine similarity. Higher is better (0 → 1).</p>
+
+  <!-- Inputs -->
+  <div class="inputs-banner">
+    <div class="input-chip">
+      <div class="chip-label">Input 1</div>
+      <div class="chip-val q">Original Question</div>
+    </div>
+    <div class="input-chip">
+      <div class="chip-label">Input 2</div>
+      <div class="chip-val a">Generated Answer</div>
+    </div>
+    <div class="input-chip">
+      <div class="chip-label">Input 3</div>
+      <div class="chip-val c">Retrieved Context</div>
+    </div>
+  </div>
+
+  <!-- Key insight callout -->
+  <div class="key-diff">
+    <div class="diff-icon">🔄</div>
+    <p><strong>Clever reverse trick!</strong> Instead of directly judging relevance, this metric asks: <em>"If I only had the answer, what questions would I ask?"</em> If those generated questions match the original question, the answer must be relevant. Uses <strong>embeddings + cosine similarity</strong> — no binary yes/no judgement.</p>
+  </div>
+
+  <!-- Steps -->
+  <div class="flow">
+
+    <!-- Step 1 -->
+    <div class="step">
+      <div class="step-num sky">1</div>
+      <div class="step-card">
+        <div class="step-label">Generate</div>
+        <div class="step-title">Create artificial questions from the answer + context</div>
+        <div class="step-desc">
+          An LLM reads the <strong style="color:var(--sky)">generated answer</strong> and <strong style="color:var(--pink)">retrieved context</strong>, then generates <strong>N questions</strong> (default 3) that the answer could plausibly be responding to.
+        </div>
+        <div class="example-box">
+          <span class="label">Original Question</span>
+          "Where was Einstein born?"
+          <br><br>
+          <span class="label" style="color:var(--sky);">Generated Answer</span>
+          "Einstein was born in Ulm, Germany in 1879."
+          <br><br>
+          <span class="label purple-label">→ Artificial questions generated (N=3)</span>
+          <div class="gen-q"><span class="gen-q-num">1</span> "In which city was Albert Einstein born?"</div>
+          <div class="gen-q"><span class="gen-q-num">2</span> "What is the birthplace of Einstein?"</div>
+          <div class="gen-q"><span class="gen-q-num">3</span> "Where was physicist Einstein born?"</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step">
+      <div class="step-num purple">2</div>
+      <div class="step-card">
+        <div class="step-label">Embed</div>
+        <div class="step-title">Get embeddings for all questions</div>
+        <div class="step-desc">
+          Compute vector embeddings for the <strong style="color:var(--accent)">original question</strong> and each of the <strong style="color:var(--purple)">N generated questions</strong> using an embedding model.
+        </div>
+        <div class="example-box">
+          <span class="label">Embeddings computed</span>
+          <div class="gen-q"><span style="color:var(--accent);">E<sub>o</sub></span>&nbsp; = embed("Where was Einstein born?")</div>
+          <div class="gen-q"><span style="color:var(--purple);">E<sub>g1</sub></span> = embed("In which city was Albert Einstein born?")</div>
+          <div class="gen-q"><span style="color:var(--purple);">E<sub>g2</sub></span> = embed("What is the birthplace of Einstein?")</div>
+          <div class="gen-q"><span style="color:var(--purple);">E<sub>g3</sub></span> = embed("Where was physicist Einstein born?")</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step">
+      <div class="step-num green">3</div>
+      <div class="step-card">
+        <div class="step-label">Compare</div>
+        <div class="step-title">Compute cosine similarity for each pair</div>
+        <div class="step-desc">
+          Calculate the <strong style="color:var(--green)">cosine similarity</strong> between the original question embedding and each generated question embedding.
+        </div>
+        <div class="example-box">
+          <span class="label green-label">→ Cosine similarities</span>
+          <div class="cosine-row">
+            <div class="cosine-item">
+              <span class="pair">E<sub>o</sub> ↔ E<sub>g1</sub></span>
+              <div class="cosine-bar-track"><div class="cosine-bar-fill high" style="width:95%"></div></div>
+              <span class="cosine-val high">0.95</span>
+            </div>
+            <div class="cosine-item">
+              <span class="pair">E<sub>o</sub> ↔ E<sub>g2</sub></span>
+              <div class="cosine-bar-track"><div class="cosine-bar-fill high" style="width:91%"></div></div>
+              <span class="cosine-val high">0.91</span>
+            </div>
+            <div class="cosine-item">
+              <span class="pair">E<sub>o</sub> ↔ E<sub>g3</sub></span>
+              <div class="cosine-bar-track"><div class="cosine-bar-fill high" style="width:97%"></div></div>
+              <span class="cosine-val high">0.97</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step">
+      <div class="step-num yellow">4</div>
+      <div class="step-card">
+        <div class="step-label">Average</div>
+        <div class="step-title">Take the mean of all cosine similarities</div>
+        <div class="step-desc">
+          Average the N cosine similarity scores. The result is <strong>0</strong> (answer is completely off-topic) to <strong>1</strong> (answer perfectly addresses the question).
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Formula -->
+  <div class="formula-section">
+    <div class="formula-box">
+      <div class="formula-stack">
+        <div class="formula-row">
+          <span class="name">Answer Relevancy</span>
+          <span class="equals">=</span>
+          <div class="frac">
+            <span class="frac-num">1</span>
+            <span class="frac-den">N</span>
+          </div>
+          <span style="color:var(--muted); margin: 0 6px; font-family:'DM Mono',monospace; font-size:1.2rem;">·</span>
+          <span style="font-family:'DM Mono',monospace; font-size:1rem; color:var(--green);">Σ cos(E<sub>gᵢ</sub>, E<sub>o</sub>)</span>
+        </div>
+
+        <div class="formula-divider"></div>
+
+        <div class="formula-where">
+          <code class="pu">E<sub>gᵢ</sub></code> = embedding of generated question <em>i</em><br>
+          <code class="bl">E<sub>o</sub></code> = embedding of the original question<br>
+          <code class="sk">N</code> = number of generated questions (default 3)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Worked Example -->
+  <div class="calc-example">
+    <div class="calc-label">Worked Example</div>
+    <div class="calc-steps">
+      cos(E<sub>g1</sub>, E<sub>o</sub>) = <span class="hl">0.95</span><br>
+      cos(E<sub>g2</sub>, E<sub>o</sub>) = <span class="hl">0.91</span><br>
+      cos(E<sub>g3</sub>, E<sub>o</sub>) = <span class="hl">0.97</span><br>
+      Sum = <span class="hl">2.83</span> &nbsp;/&nbsp; N = <span class="hl">3</span>
+    </div>
+    <div class="calc-row">
+      <div class="calc-frac">
+        <span class="num">2.83</span>
+        <span class="den">3</span>
+      </div>
+      <span class="calc-eq">=</span>
+      <span class="calc-result">0.94</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

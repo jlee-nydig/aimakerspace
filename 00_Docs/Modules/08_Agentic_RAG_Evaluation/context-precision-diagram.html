@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Context Precision — Process Diagram</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --border: #30363d;
+    --accent: #58a6ff;
+    --accent2: #f0c351;
+    --green: #3fb950;
+    --red: #f85149;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --pink: #f778ba;
+    --orange: #f0883e;
+    --purple: #bc8cff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    min-height: 100vh;
+    padding: 48px 24px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .container { max-width: 920px; width: 100%; }
+
+  h1 {
+    font-size: 2.4rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 1.05rem;
+    font-weight: 300;
+    margin-bottom: 48px;
+  }
+
+  /* ---- INPUTS BANNER ---- */
+  .inputs-banner {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+
+  .input-chip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    text-align: center;
+  }
+
+  .input-chip .chip-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .input-chip .chip-val { font-weight: 600; font-size: 0.95rem; }
+  .input-chip .chip-val.q { color: var(--accent); }
+  .input-chip .chip-val.c { color: var(--pink); }
+  .input-chip .chip-val.r { color: var(--accent2); }
+
+  /* ---- KEY INSIGHT ---- */
+  .key-diff {
+    background: rgba(188,140,255,0.06);
+    border: 1px solid rgba(188,140,255,0.2);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .key-diff .diff-icon {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background: rgba(188,140,255,0.15);
+    color: var(--purple);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    margin-top: 1px;
+  }
+
+  .key-diff p {
+    color: var(--muted);
+    font-size: 0.9rem;
+    font-weight: 300;
+    line-height: 1.55;
+  }
+
+  .key-diff strong { color: var(--purple); font-weight: 600; }
+
+  /* ---- FLOW ---- */
+  .flow { display: flex; flex-direction: column; gap: 0; position: relative; }
+
+  .step { position: relative; padding-left: 64px; padding-bottom: 40px; }
+  .step:last-child { padding-bottom: 0; }
+
+  .step::before {
+    content: '';
+    position: absolute;
+    left: 22px;
+    top: 48px;
+    bottom: 0;
+    width: 2px;
+    background: var(--border);
+  }
+  .step:last-child::before { display: none; }
+
+  .step-num {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+    font-size: 1.1rem;
+    z-index: 2;
+  }
+
+  .step-num.blue { background: rgba(88,166,255,0.15); color: var(--accent); border: 2px solid var(--accent); }
+  .step-num.yellow { background: rgba(240,195,81,0.15); color: var(--accent2); border: 2px solid var(--accent2); }
+  .step-num.green { background: rgba(63,185,80,0.15); color: var(--green); border: 2px solid var(--green); }
+  .step-num.pink { background: rgba(247,120,186,0.15); color: var(--pink); border: 2px solid var(--pink); }
+  .step-num.purple { background: rgba(188,140,255,0.15); color: var(--purple); border: 2px solid var(--purple); }
+
+  .step-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 28px;
+    transition: border-color 0.2s;
+  }
+  .step-card:hover { border-color: var(--accent); }
+
+  .step-label {
+    font-size: 0.7rem;
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .step-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 12px; }
+  .step-desc { color: var(--muted); font-weight: 300; font-size: 0.95rem; line-height: 1.6; }
+
+  /* ---- EXAMPLE BOX ---- */
+  .example-box {
+    margin-top: 16px;
+    background: rgba(88,166,255,0.06);
+    border: 1px solid rgba(88,166,255,0.15);
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: var(--text);
+  }
+
+  .example-box .label {
+    color: var(--accent);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* ---- CHUNK TABLE ---- */
+  .chunk-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+  }
+
+  .chunk-table th {
+    text-align: left;
+    color: var(--muted);
+    font-weight: 500;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .chunk-table td {
+    padding: 10px 10px;
+    border-bottom: 1px solid rgba(48,54,61,0.5);
+    vertical-align: middle;
+  }
+
+  .chunk-table tr:last-child td { border-bottom: none; }
+
+  .rank-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 0.78rem;
+  }
+
+  .rank-badge.r { background: rgba(88,166,255,0.15); color: var(--accent); }
+
+  .relevance-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  .relevance-badge.yes { background: rgba(63,185,80,0.15); color: var(--green); border: 1px solid rgba(63,185,80,0.3); }
+  .relevance-badge.no { background: rgba(248,81,73,0.12); color: var(--red); border: 1px solid rgba(248,81,73,0.25); }
+
+  .precision-val { color: var(--accent2); font-weight: 500; }
+  .precision-val.zero { color: var(--muted); }
+
+  /* ---- FORMULA ---- */
+  .formula-section { margin-top: 48px; text-align: center; }
+
+  .formula-box {
+    display: inline-block;
+    background: var(--surface);
+    border: 2px solid var(--accent2);
+    border-radius: 16px;
+    padding: 32px 40px;
+    position: relative;
+  }
+
+  .formula-box::before {
+    content: 'FORMULAS';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg);
+    padding: 0 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--accent2);
+  }
+
+  .formula-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .formula-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0;
+    font-size: 1rem;
+  }
+
+  .formula-row .name { font-weight: 500; color: var(--accent2); margin-right: 4px; }
+  .formula-row .equals { color: var(--muted); margin: 0 10px; font-size: 1.2rem; }
+
+  .frac { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .frac-num { color: var(--green); padding-bottom: 6px; border-bottom: 2px solid var(--muted); text-align: center; }
+  .frac-den { color: var(--text); padding-top: 6px; text-align: center; }
+
+  .formula-divider {
+    height: 1px;
+    background: var(--border);
+    width: 100%;
+  }
+
+  .formula-note {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .formula-note code {
+    background: rgba(88,166,255,0.1);
+    color: var(--accent);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+  }
+
+  /* ---- CALC EXAMPLE ---- */
+  .calc-example {
+    margin-top: 40px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 32px;
+    text-align: center;
+  }
+
+  .calc-example .calc-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .calc-steps {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 2;
+    text-align: left;
+    max-width: 520px;
+    margin: 0 auto 20px;
+  }
+
+  .calc-steps .hl { color: var(--accent2); }
+  .calc-steps .gl { color: var(--green); }
+
+  .calc-row {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .calc-frac { display: inline-flex; flex-direction: column; align-items: center; }
+  .calc-frac .num { color: var(--green); border-bottom: 2px solid var(--muted); padding-bottom: 4px; }
+  .calc-frac .den { color: var(--text); padding-top: 4px; }
+  .calc-result { color: var(--accent2); font-weight: 700; font-size: 1.5rem; }
+  .calc-eq { color: var(--muted); }
+
+  /* ---- RESPONSIVE ---- */
+  @media (max-width: 600px) {
+    h1 { font-size: 1.6rem; }
+    .inputs-banner { grid-template-columns: 1fr; }
+    .step { padding-left: 52px; }
+    .formula-box { padding: 24px 16px; }
+    .formula-row { font-size: 0.82rem; }
+  }
+
+  /* animations */
+  .step { opacity: 0; animation: fadeUp 0.5s ease forwards; }
+  .step:nth-child(1) { animation-delay: 0.1s; }
+  .step:nth-child(2) { animation-delay: 0.25s; }
+  .step:nth-child(3) { animation-delay: 0.4s; }
+  .step:nth-child(4) { animation-delay: 0.55s; }
+
+  .formula-section { opacity: 0; animation: fadeUp 0.5s ease 0.7s forwards; }
+  .calc-example { opacity: 0; animation: fadeUp 0.5s ease 0.9s forwards; }
+  .inputs-banner { opacity: 0; animation: fadeUp 0.5s ease 0.05s forwards; }
+  .key-diff { opacity: 0; animation: fadeUp 0.5s ease 0.08s forwards; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Context Precision</h1>
+  <p class="subtitle">Measures whether the relevant chunks in the retrieved context are ranked higher than irrelevant ones. Higher is better (0 → 1).</p>
+
+  <!-- Inputs -->
+  <div class="inputs-banner">
+    <div class="input-chip">
+      <div class="chip-label">Input 1</div>
+      <div class="chip-val q">User Question</div>
+    </div>
+    <div class="input-chip">
+      <div class="chip-label">Input 2</div>
+      <div class="chip-val c">Retrieved Context (ranked chunks)</div>
+    </div>
+    <div class="input-chip">
+      <div class="chip-label">Input 3</div>
+      <div class="chip-val r">Ground-Truth Reference</div>
+    </div>
+  </div>
+
+  <!-- Key insight callout -->
+  <div class="key-diff">
+    <div class="diff-icon">🎯</div>
+    <p><strong>It's about ranking, not just relevance.</strong> A retriever that puts relevant chunks at the top scores higher than one that buries them at the bottom — even if both retrieve the same chunks. This rewards good ordering.</p>
+  </div>
+
+  <!-- Steps -->
+  <div class="flow">
+
+    <!-- Step 1 -->
+    <div class="step">
+      <div class="step-num blue">1</div>
+      <div class="step-card">
+        <div class="step-label">Judge</div>
+        <div class="step-title">For each chunk, determine if it's relevant</div>
+        <div class="step-desc">
+          An LLM looks at each retrieved context chunk (in rank order) and judges: <em>"Is this chunk relevant to answering the <strong style="color:var(--accent)">question</strong>, given the <strong style="color:var(--accent2)">reference</strong>?"</em>
+        </div>
+        <div class="example-box">
+          <span class="label">Question: "Where was Einstein born?"</span>
+          <table class="chunk-table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Chunk</th>
+                <th>Relevant?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="rank-badge r">1</span></td>
+                <td>"Einstein was born in Ulm, Germany in 1879."</td>
+                <td><span class="relevance-badge yes">✓ Yes</span></td>
+              </tr>
+              <tr>
+                <td><span class="rank-badge r">2</span></td>
+                <td>"He developed the theory of relativity."</td>
+                <td><span class="relevance-badge no">✗ No</span></td>
+              </tr>
+              <tr>
+                <td><span class="rank-badge r">3</span></td>
+                <td>"His family moved to Munich when he was young."</td>
+                <td><span class="relevance-badge yes">✓ Yes</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step">
+      <div class="step-num yellow">2</div>
+      <div class="step-card">
+        <div class="step-label">Calculate</div>
+        <div class="step-title">Compute Precision@k at each rank position</div>
+        <div class="step-desc">
+          At each rank <strong style="color:var(--accent)">k</strong>, calculate: of the top k chunks, how many are relevant? This is <strong style="color:var(--accent2)">Precision@k</strong>. Only compute this at positions where the chunk is relevant (i.e. true positives).
+        </div>
+        <div class="example-box">
+          <span class="label">→ Precision@k for each position</span>
+          <table class="chunk-table">
+            <thead>
+              <tr>
+                <th>k</th>
+                <th>Relevant?</th>
+                <th>True positives in top k</th>
+                <th>Precision@k</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="rank-badge r">1</span></td>
+                <td><span class="relevance-badge yes">✓ Yes</span></td>
+                <td>1 of 1</td>
+                <td><span class="precision-val">1/1 = 1.0</span></td>
+              </tr>
+              <tr>
+                <td><span class="rank-badge r">2</span></td>
+                <td><span class="relevance-badge no">✗ No</span></td>
+                <td>—</td>
+                <td><span class="precision-val zero">skipped</span></td>
+              </tr>
+              <tr>
+                <td><span class="rank-badge r">3</span></td>
+                <td><span class="relevance-badge yes">✓ Yes</span></td>
+                <td>2 of 3</td>
+                <td><span class="precision-val">2/3 = 0.67</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step">
+      <div class="step-num green">3</div>
+      <div class="step-card">
+        <div class="step-label">Sum</div>
+        <div class="step-title">Sum all Precision@k values</div>
+        <div class="step-desc">
+          Add up the Precision@k values from every rank position where the chunk was relevant.
+        </div>
+        <div class="example-box">
+          <span class="label">→ Sum</span>
+          <span class="precision-val">1.0</span> + <span class="precision-val">0.67</span> = <span style="color:var(--green); font-weight:500;">1.67</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step">
+      <div class="step-num purple">4</div>
+      <div class="step-card">
+        <div class="step-label">Normalize</div>
+        <div class="step-title">Divide by total relevant chunks</div>
+        <div class="step-desc">
+          Divide the sum by the <strong>total number of relevant chunks</strong> in the top K results. This gives the final <strong style="color:var(--accent2)">Context Precision@K</strong> score.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Formulas -->
+  <div class="formula-section">
+    <div class="formula-box">
+      <div class="formula-stack">
+        <div class="formula-row">
+          <span class="name">Context Precision@K</span>
+          <span class="equals">=</span>
+          <div class="frac">
+            <span class="frac-num">Σ Precision@k (for relevant k's)</span>
+            <span class="frac-den">total relevant items in top K</span>
+          </div>
+        </div>
+
+        <div class="formula-divider"></div>
+
+        <div class="formula-row">
+          <span class="name">Precision@k</span>
+          <span class="equals">=</span>
+          <div class="frac">
+            <span class="frac-num">true positives in top k</span>
+            <span class="frac-den">k</span>
+          </div>
+        </div>
+
+        <div class="formula-note">
+          where <code>K</code> = total number of chunks in retrieved context
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Worked Example -->
+  <div class="calc-example">
+    <div class="calc-label">Worked Example</div>
+    <div class="calc-steps">
+      Chunks: <span class="gl">✓ Relevant</span>, <span style="color:var(--red);">✗ Irrelevant</span>, <span class="gl">✓ Relevant</span><br>
+      Precision@1 = <span class="hl">1/1 = 1.0</span><br>
+      Precision@3 = <span class="hl">2/3 = 0.67</span><br>
+      Sum = <span class="hl">1.0 + 0.67 = 1.67</span><br>
+      Relevant chunks = <span class="hl">2</span>
+    </div>
+    <div class="calc-row">
+      <div class="calc-frac">
+        <span class="num">1.67</span>
+        <span class="den">2</span>
+      </div>
+      <span class="calc-eq">=</span>
+      <span class="calc-result">0.83</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
