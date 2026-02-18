@@ -132,10 +132,15 @@ To understand retriever metrics, remember that we want the right context in the 
 `Generator` Metrics:
 - Faithfulness
 - Response Relevancy
-
+- Factual Correctness
+  
 To understand generator metrics, remember that RAG is all about avoiding hallucinations.
 - Faithfulness asks, "Did you hallucinate, or were you faithful to the context?"
 - Response relevancy asks, "Does this answer appropriately address the original question?"
+
+<p align="center">
+  <img src="./images/ragas metrics.png" width="50%" />
+</p
 
 The details of each computation can be viewed in detail by clicking the links above. Alternatively, you can check out the RAGAS docs [here](https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/).
 
