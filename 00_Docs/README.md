@@ -25,10 +25,10 @@ Although we will sequence material slightly differently than we have shown below
 - 🕵️ Deep Research
 
 #### Evals & Systematic Improvement
-- 🧪 Synthetic Data Generation for Evals
-- 📊 Agentic RAG Evaluation
+-[ 🧪 Synthetic Data Generation for Evals](./Modules/07_Synthetic_Data_Generation_for_Evals)
+- [📊 Agentic RAG Evaluation](./Modules/08_Agentic_RAG_Evaluation)
 
-#### Production Deployemnts
+#### Production Deployments
 - 🚢 Agent Servers
 - 🔀 MCP Servers
 - 🛤️ Guardrails & Caching
