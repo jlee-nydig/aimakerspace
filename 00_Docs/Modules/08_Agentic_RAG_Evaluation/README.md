@@ -1,4 +1,4 @@
-srhg srsr# Module 8: 📊 Agentic RAG Evaluation
+# Module 8: 📊 Agentic RAG Evaluation
 
 🎯 Learn to set up and implement effective evals for agents and RAG applications.
 
