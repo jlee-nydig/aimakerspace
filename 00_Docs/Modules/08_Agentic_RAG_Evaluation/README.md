@@ -139,7 +139,7 @@ To understand generator metrics, remember that RAG is all about avoiding halluci
 - Response relevancy asks, "Does this answer appropriately address the original question?"
 
 <p align="center">
-  <img src="ragas metrics.png" width="50%" />
+  <img src="ragas metrics.png" width="75%" />
 </p
 
 The details of each computation can be viewed in detail by clicking the links above. Alternatively, you can check out the RAGAS docs [here](https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/).
