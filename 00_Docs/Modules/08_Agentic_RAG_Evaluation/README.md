@@ -1,4 +1,4 @@
-# Module 8: 📊 Agentic RAG Evaluation
+srhg srsr# Module 8: 📊 Agentic RAG Evaluation
 
 🎯 Learn to set up and implement effective evals for agents and RAG applications.
 
@@ -119,10 +119,10 @@ Assuming we've used the Knowledge Graph approach to SDG to generate [Question, R
 We can break any RAG system into two parts: the `retriever` and the `generator`. As you've heard from us before, "as goes retrieval, so goes generation."
 
 `Retriever` Metrics:
-- Context Recall
-- Context Entities Recall
-- Noise Sensitivity
-- Context Precision
+- [Context Recall](https://claude.ai/public/artifacts/2474256f-fbe3-409d-b5e1-9e02e89f14d9)
+- [Context Entities Recall](https://claude.ai/public/artifacts/ac8cc20d-37d0-4ebb-a796-701f9c507c08)
+- [Noise Sensitivity](https://claude.ai/public/artifacts/8b09865d-6bcf-4354-a1dc-42b3b222c371)
+- [Context Precision](https://claude.ai/public/artifacts/a9a64901-c5c9-4476-b72d-5da603ceb8d2)
 
 To understand retriever metrics, remember that we want the right context in the context window at the end of the day.
 - **Recall** asks "how many relevant items were retrieved?"
@@ -130,9 +130,9 @@ To understand retriever metrics, remember that we want the right context in the 
 - **Noise** asks "how many retrieved items were actually NOT relevant?" 
 
 `Generator` Metrics:
-- Faithfulness
-- Response Relevancy
-- Factual Correctness
+- [Faithfulness](https://claude.ai/public/artifacts/dc2ef8d1-d3bb-481e-a719-91e8b68d1f9b)
+- [Response Relevancy](https://claude.ai/public/artifacts/91096433-96d8-4fda-ad2c-0fcc9079e4ca)
+- [Factual Correctness](https://claude.ai/public/artifacts/58e4d9f4-f502-4208-9fbe-69cf18339269)
   
 To understand generator metrics, remember that RAG is all about avoiding hallucinations.
 - Faithfulness asks, "Did you hallucinate, or were you faithful to the context?"
