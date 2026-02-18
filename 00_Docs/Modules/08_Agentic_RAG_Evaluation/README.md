@@ -76,7 +76,7 @@ Note that MDD doesn’t require the absolute value of our metrics to be deeply m
 We can use this approach to assess the impact of changing components throughout our RAG application, from document loading, text splitting, and advanced prompting and retrieval strategies, to swapping out vector stores, embedding models, or LLM chat models.  We can even use these metrics to assess the impact of fine-tuning, which we’ll do later in the course!   
 
 <p align="center">
-  <img src="./images/ragas app.png" width="50%" />
+  <img src="ragas app.png" width="75%" />
 </p>
 
 A RAG application depicting how to use RAGAS metrics to drive product development.
@@ -139,7 +139,7 @@ To understand generator metrics, remember that RAG is all about avoiding halluci
 - Response relevancy asks, "Does this answer appropriately address the original question?"
 
 <p align="center">
-  <img src="./images/ragas metrics.png" width="50%" />
+  <img src="ragas metrics.png" width="50%" />
 </p
 
 The details of each computation can be viewed in detail by clicking the links above. Alternatively, you can check out the RAGAS docs [here](https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/).
