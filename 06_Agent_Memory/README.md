@@ -9,7 +9,7 @@
 
 | Module Sheet | Recording     | Slides        | Repo         | Homework      | Feedback       |
 |:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|
-| [Agent Memory](../00_Docs/Modules/06_Agent_Memory/README.md) | Coming soon!| [Module 6 Slides](https://www.canva.com/design/DAHA9EgZhrs/yMlmJQwBRCFHxvPvVyhlTQ/edit?utm_content=DAHA9EgZhrs&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton) | You are here! | [Module 6 Assignment: Memory](https://forms.gle/vyYhAsbZdgLZSu3RA) | [Feedback 2/10](https://forms.gle/k1cESPgXsYWrBTDU7) |
+| [Agent Memory](../00_Docs/Modules/06_Agent_Memory/README.md) | [2/10 Recording](https://f.io/sHNT3pUa) <br> password: `SRintel26` | [Module 6 Slides](https://www.canva.com/design/DAHA9EgZhrs/yMlmJQwBRCFHxvPvVyhlTQ/edit?utm_content=DAHA9EgZhrs&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton) | You are here! | [Module 6 Assignment: Memory](https://forms.gle/vyYhAsbZdgLZSu3RA) | [Feedback 2/10](https://forms.gle/k1cESPgXsYWrBTDU7) |
 
 
 ### Outline:
