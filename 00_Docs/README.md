@@ -21,11 +21,11 @@ Although we will sequence material slightly differently than we have shown below
 - [🧠 Agent Memory](./Modules/06_Agent_Memory/README.md)
 - 🐕 Advanced Retrievers
 - 🔌 MCP Connectors
-- 📶 Deep Agents
-- 🕵️ Deep Research
+- [📶 Deep Agents](./Modules/10_Deep_Agents)
+- [🕵️ Deep Research](./Modules/11_Deep_Research)
 
 #### Evals & Systematic Improvement
--[ 🧪 Synthetic Data Generation for Evals](./Modules/07_Synthetic_Data_Generation_for_Evals)
+- [🧪 Synthetic Data Generation for Evals](./Modules/07_Synthetic_Data_Generation_for_Evals)
 - [📊 Agentic RAG Evaluation](./Modules/08_Agentic_RAG_Evaluation)
 
 #### Production Deployments
