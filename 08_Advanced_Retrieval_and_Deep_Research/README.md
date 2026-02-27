@@ -5,6 +5,12 @@
 
 ## <h1 align="center" id="heading">Module 8: Advanced Retrieval, Deep Agents, and Open Deep Research</h1>
 
+| 📰 Module | ⏺️ Recording | 🖼️ Slides | 👨‍💻 Repo | 📝 Homework | 📁 Feedback |
+|:--|:--|:--|:--|:--|:--|
+| [Advanced Retrieval](../00_Docs/Modules/09_Advanced_Retreivers) | Coming Soon! | [Week 5 Slides](https://www.canva.com/design/DAHCRaILSLU/ycE9VaHVa0Ka_FAA4N5keA/edit?utm_content=DAHCRaILSLU&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton) | [`Advanced_Retrieval_Assignment`](../08_Advanced_Retrieval_and_Deep_Research/01_Advanced_Retrieval_Assignment.ipynb) | [Module 9 Assignment: Advanced Retrieval (due 3/3)](https://forms.gle/BR9kTmBUgm5ADj2F9) | [Week 5 Feedback](https://forms.gle/ydv7u7RU6icJHwkw5) |
+| [Deep Agents](../00_Docs/Modules/10_Deep_Agents) | - | - | [`Deep_Agents_Assignment`](../08_Advanced_Retrieval_and_Deep_Research/02_Deep_Agents_Assignment.ipynb) | [Module 10 Assignment: Deep Agents (due 3/3)](https://forms.gle/45TY9kXtVQSHXfVb9) | - |
+| [Deep Research](../00_Docs/Modules/11_Deep_Research) | - | - | [`Deep_Research_Assignment`](../08_Advanced_Retrieval_and_Deep_Research/03_Open_Deep_Research_Assignment.ipynb) | [Module 11 Assignment: Deep Research (due 3/3)](https://forms.gle/3hmuXeFx4JNs8a597) | - |
+
 > **Note:** This module covers three complementary topics: advanced retrieval strategies for RAG, building complex Deep Agents for long-horizon tasks, and implementing a supervisor-researcher architecture for automated deep research. All notebooks use a Stone Ridge Investment Advisory use case.
 
 ### Outline:
