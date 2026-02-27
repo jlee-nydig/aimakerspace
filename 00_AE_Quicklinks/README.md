@@ -34,6 +34,15 @@ Quicklinks are to help you **easily navigate individual lesson information** for
 |:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|
 |[Module 7: 🧪 Synthetic Data Generation for Evals](../00_Docs/Modules/07_Synthetic_Data_Generation_for_Evals) <br><br> [Module 8: 📊 Agentic RAG Evaluation](../00_Docs/Modules/08_Agentic_RAG_Evaluation) | [2/17 Recording](https://f.io/wOvcspHa) <br> password: `SRintel26` | [Week 4 Slides](https://www.canva.com/design/DAHBndeKc0U/wq_UMgQ832mMJni9_p_bow/edit?utm_content=DAHBndeKc0U&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton) | [`07_Synthetic_Data_and_Evaluation`](../07_Synthetic_Data_and_Evaluation) | [Module 7/8 Assignment: SDG and Eval](https://forms.gle/hec1caVrPVgPtLGB9) <br><br> [Project ideation form](https://forms.gle/SqATgg5sQpg6JMQv7) (due 2/24)| [Week 4 Feedback](https://forms.gle/A1kGTHff3VdAwodp6) |
 
+### Week 5: Advanced Agents
+
+| 📰 Module | ⏺️ Recording | 🖼️ Slides | 👨‍💻 Repo | 📝 Homework | 📁 Feedback |
+|:--|:--|:--|:--|:--|:--|
+| [Advanced Retrieval](../00_Docs/Modules/09_Advanced_Retreivers) | Coming Soon! | [Week 5 Slides](https://www.canva.com/design/DAHCRaILSLU/ycE9VaHVa0Ka_FAA4N5keA/edit?utm_content=DAHCRaILSLU&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton) | [`Advanced_Retrieval_Assignment`](../08_Advanced_Retrieval_and_Deep_Research/01_Advanced_Retrieval_Assignment.ipynb) | [Module 9 Assignment: Advanced Retrieval (due 3/3)](https://forms.gle/BR9kTmBUgm5ADj2F9) | [Week 5 Feedback](https://forms.gle/ydv7u7RU6icJHwkw5) |
+| [Deep Agents](../00_Docs/Modules/10_Deep_Agents) | - | - | [`Deep_Agents_Assignment`](../08_Advanced_Retrieval_and_Deep_Research/02_Deep_Agents_Assignment.ipynb) | [Module 10 Assignment: Deep Agents (due 3/3)](https://forms.gle/45TY9kXtVQSHXfVb9) | - |
+| [Deep Research](../00_Docs/Modules/11_Deep_Research) | - | - | [`Deep_Research_Assignment`](../08_Advanced_Retrieval_and_Deep_Research/03_Open_Deep_Research_Assignment.ipynb) | [Module 11 Assignment: Deep Research (due 3/3)](https://forms.gle/3hmuXeFx4JNs8a597) | - |
+
+
 Friendly reminders:
 1. Homeworks are due every Tuesday before we meet, and are submitted via Google Forms.
 2. The weekly calendar of sessions is shown below (times shown in ET)!
