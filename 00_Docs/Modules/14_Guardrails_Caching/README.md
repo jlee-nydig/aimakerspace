@@ -41,29 +41,11 @@ uv run guardrails hub install hub://guardrails/guardrails_pii
 
 ## Overview
 
-In Module 14, we'll cover a few nice-to-haves for our production LLM applications that will become more and more important as we scale: 🏦 Caching and 🛤️ Guardrails
+In Module 14, we'll cover a few nice-to-haves for our production LLM applications that will become more and more important as we scale: Caching and Guardrails
 
-As they say, cache is king. If we can save some cash with 🏦 caching, we should. We can leverage both prompt and embedding caches in general, depending on our use cases.
+As they say, cache is king. If we can save some cash with caching, we should. We can leverage both prompt and embedding caches in general, depending on our use cases.
 
-🛤️ Guardrails are the runtime checks that keep your AI application's inputs and outputs on track — enforcing safety, policy, brand, correctness, and structure.
-
-## 📈 Production-Ready Optimization Strategies
-
-When preparing production-ready Retrieval-Augmented Generation (RAG) systems, several optimization strategies must be considered:
-
-1. **Asynchronous Requests:** Asynchronous processing is critical for handling the inherent latency from APIs and services such as LLMs. Asynchronous requests allow tasks to run in parallel rather than sequentially, minimizing wait times and improving user experience.
-
-2. **Caching (Prompt and Embedding Caching):** Caching previously used prompts and embeddings can save computational resources and reduce latency. Prompt caching stores past queries and their responses to avoid regenerating answers for identical questions, while embedding caching prevents redundant embedding calculations. This is particularly useful in scenarios where users ask repetitive questions.
-
-3. **Parallel vs. Serialized Chains:** Parallel execution allows multiple tasks to run concurrently, improving overall performance, especially when working with RAG chains where multiple steps like retrieval, augmentation, and inference are involved. Serialized chains process tasks one after another, which can lead to inefficiencies in production environments with high user loads. LangChain natively supports parallel execution where possible.
-
-4. **Calling Chains, Functions, Tools, and APIs:** Production-ready applications often need to orchestrate multiple services, tools, and APIs seamlessly. This includes integrating vector databases for retrieval, orchestrating LLMs, and other third-party APIs. Using frameworks like LangChain simplifies chaining different services together into coherent workflows.
-
-5. **Scalable Vector Databases:** Vector databases, such as Qdrant or other scalable options, are essential for storing and efficiently retrieving embeddings at scale. These databases are optimized to handle large datasets through techniques like Approximate Nearest Neighbor (ANN) search, clustering, and hardware acceleration.
-
-6. **User Sessions and Context Maintenance:** Proper handling of user sessions ensures that multiple users can interact with the system without confusion or data leakage between their sessions.
-
-7. **Streaming Results for Improved UX:** Instead of waiting for the entire response from the LLM, results can be streamed token by token as they are generated. This reduces the perceived latency and allows users to start reading responses as soon as possible.
+Guardrails are the runtime checks that keep your AI application's inputs and outputs on track — enforcing safety, policy, brand, correctness, and structure.
 
 ## 🛤️ Guardrails
 
