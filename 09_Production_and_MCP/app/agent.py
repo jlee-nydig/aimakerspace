@@ -57,8 +57,8 @@ When answering questions:
 Key Stone Ridge themes: Bayesian investing, reinsurance, energy assets, \
 bitcoin allocation, longtail risk, and alternative asset management."""
 
-DEFAULT_MODEL = "claude-sonnet-4-20250514"
-EVAL_MODEL = "claude-haiku-4-5-20251001"
+DEFAULT_MODEL = "us.anthropic.claude-sonnet-4-20250514-v1:0"
+EVAL_MODEL = "us.anthropic.claude-haiku-4-5-20251001-v1:0"
 
 # Investment-domain guardrails topics
 VALID_TOPICS = [
@@ -624,4 +624,31 @@ def build_graph():
     return g
 
 
+def _route_after_agent_simple(state: AgentState):
+    """Route for simple graph: tools or END (no guardrails/helpfulness)."""
+    last_message = state["messages"][-1]
+    if getattr(last_message, "tool_calls", None):
+        return "action"
+    return END
+
+
+def build_simple_graph():
+    """Build a simplified graph with just agent + action (no guardrails or helpfulness)."""
+    tool_node = ToolNode(get_tool_belt())
+
+    g = StateGraph(AgentState)
+    g.add_node("agent", agent)
+    g.add_node("action", tool_node)
+
+    g.set_entry_point("agent")
+    g.add_conditional_edges(
+        "agent",
+        _route_after_agent_simple,
+        {"action": "action", END: END},
+    )
+    g.add_edge("action", "agent")
+    return g
+
+
 graph = build_graph().compile()
+simple_graph = build_simple_graph().compile()

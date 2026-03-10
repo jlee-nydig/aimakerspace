@@ -267,6 +267,51 @@ def search_investor_letter(query: str, section: str = "all") -> str:
     return f"Found matches in {len(results)} section(s):\n\n" + "\n\n---\n\n".join(results)
 
 
+@mcp.tool()
+def compare_funds(fund_a: str, fund_b: str) -> str:
+    """Compare two Stone Ridge funds side by side.
+
+    Returns an overview and key themes comparison for the two funds.
+
+    Args:
+        fund_a: Name or keyword for the first fund (e.g., 'SRE', 'Bitcoin').
+        fund_b: Name or keyword for the second fund (e.g., 'Reinsurance', 'Longtail Re').
+    """
+
+    def _resolve(name: str):
+        key = name.strip().lower()
+        fund = FUNDS.get(key)
+        if fund is None:
+            for k, v in FUNDS.items():
+                if key in k or key in v["name"].lower():
+                    return v
+        return fund
+
+    a = _resolve(fund_a)
+    b = _resolve(fund_b)
+
+    if a is None:
+        return f"Fund '{fund_a}' not found. Available: {', '.join(f['name'] for f in FUNDS.values())}"
+    if b is None:
+        return f"Fund '{fund_b}' not found. Available: {', '.join(f['name'] for f in FUNDS.values())}"
+
+    themes_a = "\n".join(f"  - {t}" for t in a["key_themes"])
+    themes_b = "\n".join(f"  - {t}" for t in b["key_themes"])
+
+    return (
+        f"## Fund Comparison\n\n"
+        f"### {a['name']}\n\n{a['overview']}\n\n**Key Themes:**\n{themes_a}\n\n"
+        f"---\n\n"
+        f"### {b['name']}\n\n{b['overview']}\n\n**Key Themes:**\n{themes_b}\n\n"
+        f"---\n\n"
+        f"### Key Differences\n\n"
+        f"- **{a['name']}** focuses on: {a['key_themes'][0].lower()}\n"
+        f"- **{b['name']}** focuses on: {b['key_themes'][0].lower()}\n"
+        f"- Both reflect Stone Ridge's Bayesian investment philosophy and emphasis on "
+        f"harvesting independent risk premiums."
+    )
+
+
 # ---------------------------------------------------------------------------
 # Entry point
 # ---------------------------------------------------------------------------
