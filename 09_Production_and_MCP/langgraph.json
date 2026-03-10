@@ -4,6 +4,7 @@
   "env": ".env",
   "python_version": "3.13",
   "graphs": {
-    "investment_assistant": "app.agent:graph"
+    "investment_assistant": "app.agent:graph",
+    "simple_assistant": "app.agent:simple_graph"
   }
 }
